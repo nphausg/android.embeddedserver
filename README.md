@@ -10,14 +10,21 @@
 </a>
 <br/>
 <br/>
-    <a href="https://imstudio.medium.com/" target="_blank">
+    <a href="https://nphau.medium.com/" target="_blank">
         <img src="logo.png"  width="128" margin="8">
     </a>
 </p>
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#table-of-contents)
 
+## 🚀 Copyright
+
+``` Created by $username on $today
+Copyright (c) $today.year . All rights reserved.
+Last modified $file.lastModified
+```
+
 ## 🚀Authors
 
 - https://github.com/nphau
-- https://medium.com/@imstudio
+- https://nphau.medium.com

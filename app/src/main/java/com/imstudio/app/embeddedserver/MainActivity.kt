@@ -1,3 +1,9 @@
+/*
+ * Created by nphau on 31/10/2021, 21:01
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 22/10/2021, 00:02
+ */
+
 package com.imstudio.app.embeddedserver
 
 import android.os.Build

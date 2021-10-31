@@ -1,3 +1,9 @@
+/*
+ * Created by nphau on 31/10/2021, 21:02
+ * Copyright (c) 2021 . All rights reserved.
+ * Last modified 31/10/2021, 21:02
+ */
+
 package com.imstudio.app.embeddedserver
 
 import java.net.InetAddress
@@ -10,7 +16,7 @@ object NetworkUtils {
         .map { it.hostAddress }
         .firstOrNull()
 
-    fun getInetAddresses() = NetworkInterface.getNetworkInterfaces()
+    private fun getInetAddresses() = NetworkInterface.getNetworkInterfaces()
         .iterator()
         .asSequence()
         .flatMap { networkInterface ->
