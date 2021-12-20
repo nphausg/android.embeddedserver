@@ -5,5 +5,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "ims.android.embeddedserver"
+rootProject.name = "android.embeddedserver"
 include ':app'
