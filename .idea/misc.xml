@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3421875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/xml/file_provider_paths.xml" value="0.3421875" />
       </map>
     </option>
   </component>

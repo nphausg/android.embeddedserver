@@ -1,0 +1,9 @@
+/*
+ * Created by nphau on 04/02/2022, 22:50
+ * Copyright (c) 2022 . All rights reserved.
+ * Last modified 04/02/2022, 22:50
+ */
+
+package com.nphau.app.embeddedserver.data.models
+
+data class Fruit(val id: String = "", val name: String = "")
