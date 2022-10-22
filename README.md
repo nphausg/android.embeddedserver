@@ -1,4 +1,4 @@
-<h1 align="center"> Android Embeddedserver </h1>
+<h1 align="center"> :robot: Android Embedded Server </h1>
 
 <div align="center">
     <img src="https://img.shields.io/badge/kotlin-v1.6.10-blue.svg">
