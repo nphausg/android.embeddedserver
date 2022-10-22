@@ -1,14 +1,13 @@
 <h1 align="center"> Android Embeddedserver </h1>
 
-<p align="center">
-    <a>
-        <img src="https://img.shields.io/badge/kotlin-v1.6.10-blue.svg">
-        <img src="https://img.shields.io/badge/gradle-7.1.0-blueviolet.svg">
-        <img src="https://img.shields.io/badge/API-21%2B-blue.svg?style=flat">
-        <img src="https://img.shields.io/badge/License-Apache%202.0-success.svg">
-        <img src="https://circleci.com/gh/twilio-labs/plugin-rtc.svg?style=svg">
-    </a>
-</p>
+<div align="center">
+    <img src="https://img.shields.io/badge/kotlin-v1.6.10-blue.svg">
+    <img src="https://img.shields.io/badge/gradle-7.1.0-blueviolet.svg">
+    <img src="https://img.shields.io/badge/API-21%2B-blue.svg?style=flat">
+    <img src="https://img.shields.io/badge/License-Apache%202.0-success.svg">
+    <img src="https://circleci.com/gh/twilio-labs/plugin-rtc.svg?style=svg">
+    <a href="https://github.com/hieuwu/android-embedded-server/actions/workflows/app-build.yml"><img alt="Build Status" src="https://github.com/hieuwu/android-embedded-server/actions/workflows/app-build.yml/badge.svg"/></a>
+</div>
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)
 
