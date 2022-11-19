@@ -1,10 +1,10 @@
 /*
- * Created by nphau on 04/02/2022, 22:24
+ * Created by nphau on 11/19/22, 4:16 PM
  * Copyright (c) 2022 . All rights reserved.
- * Last modified 04/02/2022, 22:23
+ * Last modified 11/19/22, 3:58 PM
  */
 
-package com.nphau.app.embeddedserver.utils
+package com.nphausg.app.embeddedserver.utils
 
 import java.net.InetAddress
 import java.net.NetworkInterface

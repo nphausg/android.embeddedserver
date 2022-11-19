@@ -4,6 +4,6 @@
  * Last modified 04/02/2022, 23:02
  */
 
-package com.nphau.app.embeddedserver.data
+package com.nphausg.app.embeddedserver.data
 
 data class BaseResponse<T>(val data: T? = null, val error: String? = null)

@@ -1,31 +1,40 @@
 /*
- * Created by nphau on 04/02/2022, 22:24
+ * Created by nphau on 11/19/22, 4:16 PM
  * Copyright (c) 2022 . All rights reserved.
- * Last modified 04/02/2022, 22:23
+ * Last modified 11/19/22, 3:58 PM
  */
 
-package com.nphau.app.embeddedserver.activities
+package com.nphausg.app.embeddedserver.activities
 
 import android.os.Build
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import com.nphau.app.embeddedserver.R
-import com.nphau.app.embeddedserver.data.BaseResponse
-import com.nphau.app.embeddedserver.data.Database
-import com.nphau.app.embeddedserver.data.models.Cart
-import com.nphau.app.embeddedserver.extensions.animateFlash
-import com.nphau.app.embeddedserver.utils.NetworkUtils
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.gson.*
-import io.ktor.http.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
-import io.ktor.websocket.*
+import com.nphausg.app.embeddedserver.R
+import com.nphausg.app.embeddedserver.data.BaseResponse
+import com.nphausg.app.embeddedserver.data.Database
+import com.nphausg.app.embeddedserver.data.models.Cart
+import com.nphausg.app.embeddedserver.extensions.animateFlash
+import com.nphausg.app.embeddedserver.utils.NetworkUtils
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.CORS
+import io.ktor.features.CallLogging
+import io.ktor.features.Compression
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.gzip
+import io.ktor.gson.gson
+import io.ktor.http.ContentType
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.response.respond
+import io.ktor.response.respondText
+import io.ktor.routing.get
+import io.ktor.routing.routing
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import io.ktor.websocket.WebSockets
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

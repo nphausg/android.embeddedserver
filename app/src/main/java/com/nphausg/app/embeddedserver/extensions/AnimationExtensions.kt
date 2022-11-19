@@ -4,7 +4,7 @@
  * Last modified 04/02/2022, 22:29
  */
 
-package com.nphau.app.embeddedserver.extensions
+package com.nphausg.app.embeddedserver.extensions
 
 import android.animation.ObjectAnimator
 import android.view.View
