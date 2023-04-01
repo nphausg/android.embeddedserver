@@ -17,60 +17,42 @@ import com.nphausg.app.embeddedserver.data.Database
 import com.nphausg.app.embeddedserver.data.models.Cart
 import com.nphausg.app.embeddedserver.extensions.animateFlash
 import com.nphausg.app.embeddedserver.utils.NetworkUtils
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.features.CORS
-import io.ktor.features.CallLogging
-import io.ktor.features.Compression
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.gzip
-import io.ktor.gson.gson
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.ContentType
-import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
-import io.ktor.response.respond
-import io.ktor.response.respondText
-import io.ktor.routing.get
-import io.ktor.routing.routing
+import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.application.call
+import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import io.ktor.websocket.WebSockets
+import io.ktor.server.plugins.cors.routing.CORS
+import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.get
+import io.ktor.server.routing.routing
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        private const val PORT = 5001
+        private const val PORT = 6868
     }
 
     private val server by lazy {
         embeddedServer(Netty, PORT, watchPaths = emptyList()) {
-            install(WebSockets)
-            install(CallLogging)
-            // provides the automatic content conversion of requests based on theirContent-Type
-            // and Accept headers. Together with the json() setting, this enables automatic
-            // serialization and deserialization to and from JSON – allowing
-            // us to delegate this tedious task to the framework.
-            install(ContentNegotiation) {
-                gson {
-                    setPrettyPrinting()
-                    disableHtmlEscaping()
-                }
-            }
             // configures Cross-Origin Resource Sharing. CORS is needed to make calls from arbitrary
             // JavaScript clients, and helps us prevent issues down the line.
             install(CORS) {
-                method(HttpMethod.Get)
-                method(HttpMethod.Post)
-                method(HttpMethod.Delete)
                 anyHost()
             }
-            // Greatly reduces the amount of data that's needed to be sent to the client by
-            // gzipping outgoing content when applicable.
-            install(Compression) {
-                gzip()
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                })
             }
             routing {
                 get("/") {

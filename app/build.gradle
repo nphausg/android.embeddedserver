@@ -42,18 +42,21 @@ android {
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
 
     // Embedded Server
-    implementation 'io.ktor:ktor-server-core:1.6.4'
-    implementation 'io.ktor:ktor-gson:1.6.4'
-    implementation 'io.ktor:ktor-server-netty:1.6.2'
-    implementation 'io.ktor:ktor-websockets:1.6.2'
+    implementation 'io.ktor:ktor-server-core:2.2.4'
+    implementation 'io.ktor:ktor-server-netty:2.2.4'
+    implementation 'io.ktor:ktor-serialization-kotlinx-json:2.2.4'
+    implementation 'io.ktor:ktor-client-content-negotiation:2.2.4'
+    implementation 'io.ktor:ktor-server-content-negotiation:2.2.4'
+    implementation 'io.ktor:ktor-server-cors:2.2.4'
+
 }
