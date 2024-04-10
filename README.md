@@ -40,9 +40,16 @@ git checkout master
 ```
 ## 🍲 Screenshots
 
+
 <h4 align="center">
-<img src="docs/device.gif" width="20%" vspace="10" hspace="10">
-<img src="docs/edge_get.gif" width="70%" vspace="10" hspace="10">
+
+Fruits | Detail |
+--- | --- |
+<img src="docs/fruits.png"> | <img src="docs/detail.png"> |
+
+Device | Connect |
+--- | --- |
+<img src="docs/device.gif"> | <img src="docs/edge_get.gif"> |
 
 ## ✨ Contributing
 Please feel free to contact me or make a pull request.
