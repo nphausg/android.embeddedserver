@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <title>Android Embedded Server</title>
+</head>
+
+<body style="padding: 96px 0px 96px 0px;">
+
+    <h1 align="center"> Android Embedded Server </h1>
+
+    <div align="center">
+        <img src="https://img.shields.io/badge/kotlin-v1.9.23-blue.svg">
+        <img src="https://img.shields.io/badge/gradle-8.3.2-blueviolet.svg">
+        <img src="https://img.shields.io/badge/API-21%2B-blue.svg?style=flat">
+        <img src="https://img.shields.io/badge/License-Apache%202.0-success.svg">
+        <img src="https://circleci.com/gh/twilio-labs/plugin-rtc.svg?style=svg">
+        <a href="https://github.com/nphau/android.embeddedserver/actions/workflows/app-build.yml"><img
+                alt="Build Status"
+                src="https://github.com/nphau/android.embeddedserver/actions/workflows/app-build.yml/badge.svg" /></a>
+    </div>
+
+    <p>
+        <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png" style="width: 100%;"
+            alt="-----------------------------------------------------">
+    </p>
+
+    <div style="padding: 0px 16px 0px 16px;">
+
+        <h2 id="-overview">👉 Overview</h2>
+        <p>A minimal way to create HTTP server in android with Kotlin. Create asynchronous client and server
+            applications.
+            Anything from microservices to multiplatform HTTP client apps in a simple way. Open Source, free, and fun!
+        </p>
+        <pre><code class="lang-kotlin"><span class="hljs-function"><span class="hljs-title">embeddedServer</span><span class="hljs-params">(Netty, PORT, watchPaths = emptyList()</span></span>) {
+            install(WebSockets)
+            install(CallLogging)
+            routing {
+                get(<span class="hljs-string">"/"</span>) {
+                    call.respondText(
+                        text = <span class="hljs-string">"Hello!! You are here in ${Build.MODEL}"</span>,
+                        contentType = ContentType<span class="hljs-selector-class">.Text</span><span class="hljs-selector-class">.Plain</span>
+                    )
+                }
+            }
+        }
+</code></pre>
+        <h2 id="-how-to-use">🚀 How to use</h2>
+        <p>Cloning the repository into a local directory and checkout the desired branch:</p>
+        <pre><code>git clone git@github<span class="hljs-selector-class">.com</span>:nphausg/android<span class="hljs-selector-class">.embeddedserver</span><span class="hljs-selector-class">.git</span>
+cd android<span class="hljs-selector-class">.embeddedserver</span>
+git checkout master
+</code></pre>
+            <h2 id="-contributing">✨ Contributing</h2>
+            <p>Please feel free to contact me or make a pull request.</p>
+            <h2 id="-author">👀 Author</h2>
+            <p>
+                <a href="https://nphausg.medium.com" target="_blank">
+                    <img src="https://avatars2.githubusercontent.com/u/13111806?s=400&u=f09b6160dbbe2b7eeae0aeb0ab4efac0caad57d7&v=4"
+                        width="96" height="96">
+                </a>
+                <a href="https://github.com/hieuwu" target="_blank">
+                    <img src="https://avatars.githubusercontent.com/u/43868345?v=4" width="96" height="96">
+                </a>
+            </p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

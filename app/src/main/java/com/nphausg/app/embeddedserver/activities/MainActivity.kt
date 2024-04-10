@@ -107,7 +107,7 @@ private fun Logo() {
 
     Card(
         modifier = Modifier
-            .size(96.dp)
+            .size(128.dp)
             .offset {
                 IntOffset(
                     offsetX.value.toInt(),
@@ -230,6 +230,17 @@ private fun MainScreen() {
                     style = MaterialTheme.typography.titleMedium,
                 )
             }
+
+            Row {
+                Icon(imageVector = ImsIcons.PlayArrow, contentDescription = null)
+                Text(
+                    color = Color.Black,
+                    textAlign = TextAlign.Start,
+                    text = String.format("STATIC: %s/static", EmbeddedServer.host),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
+
         }
 
         Row(
@@ -250,6 +261,7 @@ private fun MainScreen() {
                 enabled = hasStarted,
                 modifier = Modifier.weight(1f),
                 onClick = {
+                    ticks = 0
                     hasStarted = false
                     EmbeddedServer.stop()
                 },

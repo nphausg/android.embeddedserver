@@ -29,6 +29,7 @@ embeddedServer(Netty, PORT, watchPaths = emptyList()) {
             }
         }
 ```
+
 ## 🚀 How to use
 
 Cloning the repository into a local directory and checkout the desired branch:
@@ -38,8 +39,20 @@ git clone git@github.com:nphausg/android.embeddedserver.git
 cd android.embeddedserver
 git checkout master
 ```
-## 🍲 Screenshots
 
+## 🍲 Static resource
+
+Config | Demo |
+--- | --- |
+<img src="docs/static_config.png"> | <img src="docs/static_demo.png"> |
+
+```kotlin
+    staticResources("/static", ""){
+        default("index.html")
+    }
+```
+
+## 🍲 Screenshots
 
 <h4 align="center">
 
@@ -52,6 +65,7 @@ Device | Connect |
 <img src="docs/demo.gif"> | <img src="docs/edge_get.gif"> |
 
 ## ✨ Contributing
+
 Please feel free to contact me or make a pull request.
 
 ## 👀 Author

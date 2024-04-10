@@ -11,25 +11,38 @@ import com.nphausg.app.embeddedserver.data.BaseResponse
 import com.nphausg.app.embeddedserver.data.Database
 import com.nphausg.app.embeddedserver.data.models.Cart
 import com.nphausg.app.embeddedserver.utils.NetworkUtils
+import io.ktor.http.ContentDisposition
+import io.ktor.http.ContentDisposition.Companion.File
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.HttpStatusCode.Companion.PartialContent
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
+import io.ktor.server.http.content.defaultResource
+import io.ktor.server.http.content.resource
+import io.ktor.server.http.content.resources
+import io.ktor.server.http.content.static
+import io.ktor.server.http.content.staticFiles
+import io.ktor.server.http.content.staticResources
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
+import io.ktor.server.response.header
 import io.ktor.server.response.respond
+import io.ktor.server.response.respondFile
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 
 object EmbeddedServer {
 
@@ -50,6 +63,10 @@ object EmbeddedServer {
                 })
             }
             routing {
+                //  staticResources
+                staticResources("/static", ""){
+                    default("index.html")
+                }
                 get("/") {
                     okText(call, "Hello!! You are here in ${Build.MODEL}")
                 }
@@ -66,6 +83,18 @@ object EmbeddedServer {
                     } else {
                         call.respond(HttpStatusCode.NotFound)
                     }
+                }
+                get("/download") {
+                    val file = File("files/ktor_logo.png")
+                    call.response.header(
+                        HttpHeaders.ContentDisposition,
+                        ContentDisposition.Attachment.withParameter(
+                            ContentDisposition.Parameters.FileName,
+                            "ktor_logo.png"
+                        ).toString()
+                    )
+                    call.response.status(HttpStatusCode.OK)
+                    call.respondFile(file)
                 }
             }
         }
