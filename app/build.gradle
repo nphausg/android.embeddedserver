@@ -27,11 +27,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_17
     }
     packagingOptions {
         jniLibs {
@@ -51,16 +51,17 @@ android {
 
 dependencies {
 
+    // Core
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    // serialization
-    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0'
+    // Serialization
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3'
 
     // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0"
 
     // Embedded Server
     implementation 'io.ktor:ktor-server-core:2.3.10'
@@ -70,17 +71,13 @@ dependencies {
     implementation 'io.ktor:ktor-server-content-negotiation:2.3.10'
     implementation 'io.ktor:ktor-server-cors:2.3.10'
 
-    // Compose
-    def composeBom = platform('androidx.compose:compose-bom:2024.04.00')
-    implementation composeBom
-    androidTestImplementation composeBom
-    // Android Studio Preview support
-    implementation 'androidx.compose.ui:ui-tooling-preview'
-    debugImplementation 'androidx.compose.ui:ui-tooling'
-    // Optional - Integration with activities
-    implementation 'androidx.activity:activity-compose:1.8.2'
-
     // Test
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // UI
+    implementation "androidx.core:core-splashscreen:1.0.1"
+    implementation project(':core-ui')
+
+    // Modules
 }

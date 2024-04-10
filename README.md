@@ -49,7 +49,7 @@ Fruits | Detail |
 
 Device | Connect |
 --- | --- |
-<img src="docs/device.gif"> | <img src="docs/edge_get.gif"> |
+<img src="docs/demo.gif"> | <img src="docs/edge_get.gif"> |
 
 ## ✨ Contributing
 Please feel free to contact me or make a pull request.

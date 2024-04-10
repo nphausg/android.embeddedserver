@@ -73,12 +73,20 @@ object EmbeddedServer {
 
     fun start() {
         ioScope.launch {
-            server.start(wait = true)
+            try {
+                server.start(wait = true)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
     fun stop() {
-        server.stop(1_000, 2_000)
+        try {
+            server.stop(1_000, 2_000)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     val host: String
