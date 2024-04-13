@@ -11,10 +11,6 @@ import java.util.UUID
 
 object Database {
 
-    val FRUITS = listOf(
-        Fruit(UUID.randomUUID().toString(), "Cucumbers 🥒"),
-        Fruit(UUID.randomUUID().toString(), "Tomatoes 🍅"),
-        Fruit(UUID.randomUUID().toString(), "Orange Juice 🍊")
-    )
+    val FRUITS = mutableListOf<Fruit>()
 
 }

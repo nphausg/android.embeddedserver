@@ -7,29 +7,20 @@
 package com.nphausg.app.embeddedserver
 
 import android.os.Build
-import com.nphausg.app.embeddedserver.data.BaseResponse
 import com.nphausg.app.embeddedserver.data.Database
 import com.nphausg.app.embeddedserver.data.models.Cart
+import com.nphausg.app.embeddedserver.utils.FileUtils
 import com.nphausg.app.embeddedserver.utils.NetworkUtils
 import io.ktor.http.ContentDisposition
-import io.ktor.http.ContentDisposition.Companion.File
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.HttpStatusCode.Companion.PartialContent
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.http.content.defaultResource
-import io.ktor.server.http.content.resource
-import io.ktor.server.http.content.resources
-import io.ktor.server.http.content.static
-import io.ktor.server.http.content.staticFiles
 import io.ktor.server.http.content.staticResources
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.encodeToString
 import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
@@ -42,6 +33,8 @@ import io.ktor.server.routing.routing
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.io.File
 
 object EmbeddedServer {
@@ -64,16 +57,16 @@ object EmbeddedServer {
             }
             routing {
                 //  staticResources
-                staticResources("/static", ""){
+                staticResources("/static", "") {
                     default("index.html")
                 }
                 get("/") {
                     okText(call, "Hello!! You are here in ${Build.MODEL}")
                 }
                 get("/fruits") {
-                    okText(call, Json.encodeToString(BaseResponse(Cart.sample()).also {
-                        println(it.data)
-                    }))
+                    okText(call, FileUtils.readText("data.json").also {
+                        Database.FRUITS.addAll(FileUtils.decode<Cart>(it).items)
+                    })
                 }
                 get("/fruits/{id}") {
                     val id = call.parameters["id"]
