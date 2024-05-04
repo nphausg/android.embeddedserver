@@ -30,13 +30,13 @@ jobs:
       - name: Move files
         run: |
           mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/app-release.apk
-          mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/app-release.aab
+      # mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/app-release.aab
 
-      - name: Sign app APK
+      - name: Sign APK
         uses: ilharp/sign-android-release@v1
         id: sign_app
         with:
-          releaseDir: app/build/outputs/apk/release
+          releaseDir: app/build/outputs
           signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
           keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
