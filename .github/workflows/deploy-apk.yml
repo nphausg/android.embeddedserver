@@ -32,15 +32,25 @@ jobs:
           mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/app-release.apk
           mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/app-release.aab
 
-      - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
+      - name: Sign app APK
+        uses: ilharp/sign-android-release@v1
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs
-          signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
-          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          releaseDir: app/build/outputs/apk/release
+          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
+          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      # - name: Sign APK
+      #   uses: r0adkll/sign-android-release@v1
+      #   id: sign_app
+      #   with:
+      #     releaseDirectory: app/build/outputs
+      #     signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
+      #     alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+      #     keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      #     keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
       - name: Build Changelog
         uses: ardalanamini/auto-changelog@v3
