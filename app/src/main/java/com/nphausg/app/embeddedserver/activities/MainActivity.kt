@@ -32,8 +32,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilledIconToggleButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -61,14 +64,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.nphausg.app.embeddedserver.EmbeddedServer
 import com.nphausg.app.embeddedserver.R
-import com.nphausg.app.embeddedserver.data.models.Cart
-import com.nphausg.app.embeddedserver.utils.FileUtils
-import com.nphausg.app.ui.ImsApp
-import com.nphausg.app.ui.components.theme.ImsTheme
-import com.nphausg.app.ui.components.ThemePreviews
-import com.nphausg.app.ui.components.button.ImsButton
-import com.nphausg.app.ui.components.button.ImsOutlinedButton
-import com.nphausg.app.ui.components.icon.ImsIcons
+import com.masewsg.app.ui.ComposeApp
+import com.masewsg.app.ui.components.theme.ComposeTheme
+import com.masewsg.app.ui.components.ThemePreviews
+import com.masewsg.app.ui.components.button.ComposeButton
+import com.masewsg.app.ui.components.button.ComposeOutlinedButton
+import com.masewsg.app.ui.components.icon.ComposeIcons
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
@@ -90,8 +91,8 @@ class MainActivity : AppCompatActivity() {
         // enableEdgeToEdge()
         setContent {
             CompositionLocalProvider() {
-                ImsTheme {
-                    ImsApp {
+                ComposeTheme {
+                    ComposeApp {
                         MainScreen()
                     }
                 }
@@ -205,7 +206,7 @@ private fun MainScreen() {
             )
         ) {
             Row {
-                Icon(imageVector = ImsIcons.PlayArrow, contentDescription = null)
+                Icon(imageVector = ComposeIcons.PlayArrow, contentDescription = null)
                 Text(
                     color = Color.Black,
                     textAlign = TextAlign.Start,
@@ -214,7 +215,7 @@ private fun MainScreen() {
                 )
             }
             Row {
-                Icon(imageVector = ImsIcons.PlayArrow, contentDescription = null)
+                Icon(imageVector = ComposeIcons.PlayArrow, contentDescription = null)
                 Text(
                     color = Color.Black,
                     textAlign = TextAlign.Start,
@@ -224,7 +225,7 @@ private fun MainScreen() {
             }
 
             Row(modifier = Modifier) {
-                Icon(imageVector = ImsIcons.PlayArrow, contentDescription = null)
+                Icon(imageVector = ComposeIcons.PlayArrow, contentDescription = null)
                 Text(
                     color = Color.Black,
                     textAlign = TextAlign.Start,
@@ -234,7 +235,7 @@ private fun MainScreen() {
             }
 
             Row {
-                Icon(imageVector = ImsIcons.PlayArrow, contentDescription = null)
+                Icon(imageVector = ComposeIcons.PlayArrow, contentDescription = null)
                 Text(
                     color = Color.Black,
                     textAlign = TextAlign.Start,
@@ -250,7 +251,7 @@ private fun MainScreen() {
                 .fillMaxWidth()
                 .padding(Dp(36f))
         ) {
-            ImsButton(
+            ComposeButton(
                 enabled = !hasStarted,
                 modifier = Modifier.weight(1f),
                 onClick = {
@@ -259,7 +260,7 @@ private fun MainScreen() {
                 },
                 text = { Text("Start") })
             Spacer(modifier = Modifier.weight(0.1f))
-            ImsOutlinedButton(
+            ComposeOutlinedButton(
                 enabled = hasStarted,
                 modifier = Modifier.weight(1f),
                 onClick = {
@@ -302,8 +303,8 @@ private fun MainScreen() {
 @ThemePreviews
 @Composable
 fun MainScreenPreview() {
-    ImsTheme {
-        ImsApp {
+    ComposeTheme {
+        ComposeApp {
             MainScreen()
         }
     }

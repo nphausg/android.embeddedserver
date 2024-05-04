@@ -1,0 +1,41 @@
+name: Deploy APK on GitHub
+
+on:
+  release:
+    types:
+      - created
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      
+      - name: Build APK
+        run: bash gradlew app:assembleRelease
+
+      - uses: r0adkll/sign-android-release@v1.0.4
+        name: Sign APK
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias:  ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - uses: svenstaro/upload-release-action@v2
+        name: Upload APK
+        with:
+          file: ${{steps.sign_app.outputs.signedReleaseFile}}
+          asset_name: embedded_server.apk
+          tag: ${{ github.ref }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
