@@ -1,4 +1,4 @@
-name: Deploy APK on GitHub
+name: assembleRelease
 
 # on:
 #   release:
@@ -37,10 +37,10 @@ jobs:
         id: sign_app
         with:
           releaseDir: app/build/outputs
-          signingKey: ${{ secrets.SIGNING_KEY }}
-          keyAlias:  ${{ secrets.KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
+          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
+          keyAlias:  ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
       - name: Build Changelog
         uses: ardalanamini/auto-changelog@v3
