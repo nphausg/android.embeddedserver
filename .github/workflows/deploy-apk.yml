@@ -1,16 +1,19 @@
 name: Deploy APK on GitHub
 
+# on:
+#   release:
+#     types:
+#       - created
 on:
-  release:
-    types:
-      - created
+  push:
+    branches: [ develop ]
 
 permissions:
   contents: write
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v1
@@ -19,18 +22,33 @@ jobs:
         with:
           java-version: 17
       
-      - name: Build APK
-        run: bash gradlew app:assembleRelease
+      - name: Build APK + AAB
+        run: |
+          chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh assembleRelease
+          chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh bundleRelease
 
-      - uses: r0adkll/sign-android-release@v1.0.4
+      - name: Move files
+        run: |
+          mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/app-release.apk
+          mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/app-release.aab
+
+      - uses: ilharp/sign-android-release@v1.0.4
         name: Sign APK
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias:  ${{ secrets.KEY_ALIAS }}
+          releaseDir: app/build/outputs
+          signingKey: ${{ secrets.SIGNING_KEY }}
+          keyAlias:  ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Build Changelog
+        uses: ardalanamini/auto-changelog@v3
+        with:
+          mention-authors: false
+          mention-new-contributors: false
+          include-compare: false
+          semver: false
 
       - uses: svenstaro/upload-release-action@v2
         name: Upload APK

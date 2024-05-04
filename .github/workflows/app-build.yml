@@ -12,19 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Android CI
+name: assembleDebug
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ develop ]
 
 jobs:
 
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v1
@@ -32,10 +32,17 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      - name: Build project
+
+      - name: Clean
+        run: |
+          chmod +x sh scripts/cleanup.sh
+
+      - name: Build APK
         run:  chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh assembleDebug
+          
       - name: Zip artifacts
         run: zip -r assemble.zip . -i '**/build/*.apk' '**/build/*.aab' '**/build/*.aar' '**/build/*.so'
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
