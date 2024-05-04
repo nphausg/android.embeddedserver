@@ -22,8 +22,8 @@ on:
 
 jobs:
 
-  lint:
-    name: Setup & Lint
+  build:
+    name: Build
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v1
@@ -37,22 +37,12 @@ jobs:
         run: |
           ./scripts/cleanup.sh
 
-
-  build:
-    name: Build
-    runs-on: ubuntu-20.04
-    steps:
-
       - name: Build APK
         run:  chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh assembleDebug
           
       - name: Zip artifacts
         run: zip -r assemble.zip . -i '**/build/*.apk' '**/build/*.aab' '**/build/*.aar' '**/build/*.so'
 
-  deploy:
-    name: Deply
-    runs-on: ubuntu-20.04
-    steps:
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
