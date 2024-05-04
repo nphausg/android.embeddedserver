@@ -46,6 +46,6 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
-          name: assemble
-          path: assemble.zip
+          name: assembleDebug
+          path: assembleDebug.zip
 
