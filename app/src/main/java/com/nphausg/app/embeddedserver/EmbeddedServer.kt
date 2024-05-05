@@ -78,12 +78,12 @@ object EmbeddedServer {
                     }
                 }
                 get("/download") {
-                    val file = File("files/ktor_logo.png")
+                    val file = File("files/file.jpg")
                     call.response.header(
                         HttpHeaders.ContentDisposition,
                         ContentDisposition.Attachment.withParameter(
                             ContentDisposition.Parameters.FileName,
-                            "ktor_logo.png"
+                            "file.png"
                         ).toString()
                     )
                     call.response.status(HttpStatusCode.OK)

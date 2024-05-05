@@ -25,6 +25,10 @@ jobs:
       - name: Build APK + AAB
         run: |
           ls /usr/local/lib/android/sdk/build-tools/
+          echo ANDROID_SIGNING_KEY: ${{ secrets.ANDROID_SIGNING_KEY }}
+          echo ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          echo ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          echo ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh assembleRelease
         # chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh bundleRelease
 
