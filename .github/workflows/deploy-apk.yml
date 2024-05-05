@@ -23,7 +23,7 @@ jobs:
           java-version: 17
       
       - name: Echo APK
-        run: run: echo ANDROID_SIGNING_KEY ${{secrets.ANDROID_SIGNING_KEY}} | sed 's/./& /g'
+        run: echo ANDROID_SIGNING_KEY ${{secrets.ANDROID_SIGNING_KEY}} | sed 's/./& /g'
 
       # - name: Build APK + AAB
       #   run: |
