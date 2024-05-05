@@ -21,62 +21,45 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      
+
+      - name: Build APK + AAB
+        run: |
+          ls /usr/local/lib/android/sdk/build-tools/
+          chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh assembleRelease
+          chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh bundleRelease
+
+      - name: Move files
+        run: |
+          mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/app-release.apk
+          mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/app-release.aab
+
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs
+          signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
+          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "35.0.1"
+
+      - name: Build Changelog
+        uses: ardalanamini/auto-changelog@v3
+        with:
+          mention-authors: false
+          mention-new-contributors: false
+          include-compare: false
+          semver: false
+
       - name: Echo APK
-        run: echo ANDROID_SIGNING_KEY ${{secrets.ANDROID_SIGNING_KEY}} | sed 's/./& /g'
+        run: echo Signed APK FILE ${{steps.sign_app.outputs.signedReleaseFile}}
 
-      # - name: Build APK + AAB
-      #   run: |
-      #     ls /usr/local/lib/android/sdk/build-tools/
-      #     echo ANDROID_SIGNING_KEY: ${{ secrets.ANDROID_SIGNING_KEY }}
-      #     echo ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-      #     echo ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      #     echo ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-      #     chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh assembleRelease
-      #   # chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh bundleRelease
-
-      # - name: Move files
-      #   run: |
-      #     mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/app-release.apk
-      # # mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/app-release.aab
-
-      # # - name: Sign APK
-      # #   uses: ilharp/sign-android-release@v1
-      # #   id: sign_app
-      # #   with:
-      # #     releaseDir: app/build/outputs
-      # #     signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
-      # #     keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
-      # #     keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-      # #     keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
-
-      # - name: Sign APK
-      #   uses: r0adkll/sign-android-release@v1
-      #   id: sign_app
-      #   with:
-      #     releaseDirectory: app/build/outputs
-      #     signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
-      #     alias: ${{ secrets.ANDROID_KEY_ALIAS }}
-      #     keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-      #     keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      #   env:
-      #     BUILD_TOOLS_VERSION: "35.0.1"
-
-      # - name: Build Changelog
-      #   uses: ardalanamini/auto-changelog@v3
-      #   with:
-      #     mention-authors: false
-      #     mention-new-contributors: false
-      #     include-compare: false
-      #     semver: false
-
-      # - name: Echo APK
-      #   run: echo Signed APK FILE ${{steps.sign_app.outputs.signedReleaseFile}}
-
-      # - uses: svenstaro/upload-release-action@v2
-      #   name: Upload APK
-      #   with:
-      #     file: ${{steps.sign_app.outputs.signedReleaseFile}}
-      #     asset_name: embedded_server.apk
-      #     tag: ${{ github.ref }}
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: svenstaro/upload-release-action@v2
+        name: Upload APK
+        with:
+          file: ${{steps.sign_app.outputs.signedReleaseFile}}
+          asset_name: embedded_server.apk
+          tag: ${{ github.ref }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
