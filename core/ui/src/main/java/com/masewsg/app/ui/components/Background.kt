@@ -146,7 +146,7 @@ fun ComposeGradientBackground(
 }
 
 /**
- * Multipreview annotation that represents light and dark themes. Add this annotation to a
+ * Multi Preview annotation that represents light and dark themes. Add this annotation to a
  * composable to render the both themes.
  */
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, name = "Light theme")

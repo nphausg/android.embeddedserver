@@ -32,11 +32,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Card
-import androidx.compose.material3.FilledIconToggleButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -62,17 +58,21 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.nphausg.app.embeddedserver.EmbeddedServer
-import com.nphausg.app.embeddedserver.R
 import com.masewsg.app.ui.ComposeApp
-import com.masewsg.app.ui.components.theme.ComposeTheme
 import com.masewsg.app.ui.components.ThemePreviews
 import com.masewsg.app.ui.components.button.ComposeButton
 import com.masewsg.app.ui.components.button.ComposeOutlinedButton
 import com.masewsg.app.ui.components.icon.ComposeIcons
+import com.masewsg.app.ui.components.theme.ComposeTheme
+import com.nphausg.app.embeddedserver.EmbeddedServer
+import com.nphausg.app.embeddedserver.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
+
+private val getRunningServerInfo = { ticks: Int ->
+    "The server is running on: ${Build.MODEL} at ${EmbeddedServer.host} -> (${ticks}s ....)"
+}
 
 class MainActivity : AppCompatActivity() {
 
@@ -98,6 +98,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // EmbeddedServer.stop()
     }
 }
 
@@ -161,9 +166,10 @@ private fun Logo() {
 }
 
 @Composable
-private fun MainScreen() {
+private fun MainScreen(modifier: Modifier = Modifier) {
 
     var ticks by remember { mutableIntStateOf(0) }
+
     LaunchedEffect(Unit) {
         while (true) {
             delay(1.seconds)
@@ -173,30 +179,35 @@ private fun MainScreen() {
 
     var hasStarted by remember { mutableStateOf(false) }
 
-    val value by rememberInfiniteTransition().animateFloat(
-        initialValue = 0.8f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 1000,
-                easing = LinearEasing
-            ),
-            repeatMode = RepeatMode.Reverse
+    val value by rememberInfiniteTransition(label = "")
+        .animateFloat(
+            initialValue = 0.8f,
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(
+                    durationMillis = 1000,
+                    easing = LinearEasing
+                ),
+                repeatMode = RepeatMode.Reverse
+            ), label = ""
         )
-    )
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(Color.White),
+            .background(Color.White)
+            .then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(
             space = 20.dp,
             alignment = Alignment.CenterVertically
         )
     ) {
-        Spacer(modifier = Modifier.weight(1f))
+
+        val reusedModifier = Modifier.weight(1f)
+
+        Spacer(modifier = reusedModifier)
         Logo()
         Spacer(modifier = Modifier.weight(0.1f))
         Column(
@@ -253,22 +264,24 @@ private fun MainScreen() {
         ) {
             ComposeButton(
                 enabled = !hasStarted,
-                modifier = Modifier.weight(1f),
+                modifier = reusedModifier,
                 onClick = {
                     hasStarted = true
                     EmbeddedServer.start()
                 },
-                text = { Text("Start") })
+                text = { Text("Start") }
+            )
             Spacer(modifier = Modifier.weight(0.1f))
             ComposeOutlinedButton(
                 enabled = hasStarted,
-                modifier = Modifier.weight(1f),
+                modifier = reusedModifier,
                 onClick = {
                     ticks = 0
                     hasStarted = false
                     EmbeddedServer.stop()
                 },
-                text = { Text("Stop") })
+                text = { Text("Stop") }
+            )
         }
 
         Column(modifier = Modifier.height(8.dp)) {
@@ -290,19 +303,19 @@ private fun MainScreen() {
             color = Color.Black,
             textAlign = TextAlign.Center,
             text = if (hasStarted) {
-                "The server is running on: ${Build.DEVICE} (${ticks}s ....)"
+                getRunningServerInfo(ticks)
             } else {
                 "Please click 'Start' to start the embedded server"
             },
             style = MaterialTheme.typography.labelMedium,
         )
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = reusedModifier)
     }
 }
 
-@ThemePreviews
 @Composable
-fun MainScreenPreview() {
+@ThemePreviews
+private fun MainScreenPreview() {
     ComposeTheme {
         ComposeApp {
             MainScreen()

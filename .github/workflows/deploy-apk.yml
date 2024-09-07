@@ -1,16 +1,19 @@
-name: Deploy APK on GitHub
+name: assembleRelease
 
+# on:
+#   release:
+#     types:
+#       - created
 on:
-  release:
-    types:
-      - created
+  push:
+    branches: [ develop ]
 
 permissions:
   contents: write
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v1
@@ -18,19 +21,40 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      
-      - name: Build APK
-        run: bash gradlew app:assembleRelease
 
-      - uses: r0adkll/sign-android-release@v1.0.4
-        name: Sign APK
+      - name: Build APK + AAB
+        run: |
+          ls /usr/local/lib/android/sdk/build-tools/
+          chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh assembleRelease
+          chmod +x .github/scripts/gradlew_recursive.sh ; .github/scripts/gradlew_recursive.sh bundleRelease
+
+      - name: Move files
+        run: |
+          mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/app-release.apk
+          mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/app-release.aab
+
+      - name: Sign APK + AAB
+        uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias:  ${{ secrets.KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
+          releaseDirectory: app/build/outputs
+          signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
+          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "35.0.1"
+
+      - name: Build Changelog
+        uses: ardalanamini/auto-changelog@v3
+        with:
+          mention-authors: false
+          mention-new-contributors: false
+          include-compare: false
+          semver: false
+
+      - name: Echo APK
+        run: echo Signed APK FILE ${{steps.sign_app.outputs.signedReleaseFile}}
 
       - uses: svenstaro/upload-release-action@v2
         name: Upload APK

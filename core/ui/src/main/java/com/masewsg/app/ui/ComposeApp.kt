@@ -34,7 +34,7 @@ import com.masewsg.app.ui.components.ComposeGradientBackground
 import com.masewsg.app.ui.components.color.GradientColors
 import com.masewsg.app.ui.components.color.LocalGradientColors
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ComposeApp(content: @Composable () -> Unit) {
 

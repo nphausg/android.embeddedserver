@@ -52,32 +52,38 @@ android {
 dependencies {
 
     // Core
-    implementation 'androidx.core:core-ktx:1.13.1'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.core.splashscreen
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.appcompat
 
     // Serialization
-    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3'
+    implementation libs.kotlinx.serialization.json
 
     // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0"
+    implementation libs.kotlinx.coroutines.core
 
     // Embedded Server
-    implementation 'io.ktor:ktor-server-core:2.3.10'
-    implementation 'io.ktor:ktor-server-netty:2.3.10'
-    implementation 'io.ktor:ktor-serialization-kotlinx-json:2.3.10'
-    implementation 'io.ktor:ktor-client-content-negotiation:2.3.10'
-    implementation 'io.ktor:ktor-server-content-negotiation:2.3.10'
-    implementation 'io.ktor:ktor-server-cors:2.3.10'
+    implementation libs.ktor.server.core
+    implementation libs.ktor.server.netty
+    implementation libs.ktor.serialization.kotlinx.json
+    implementation libs.ktor.client.content.negotiation
+    implementation libs.ktor.server.content.negotiation
+    implementation libs.ktor.server.cors
 
-    // Test
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    // Unit testing libraries
+    testImplementation libs.junit
+    testImplementation libs.mockito.core
+    testImplementation libs.mockito.inline
+    testImplementation libs.kotlin.test
+    testImplementation libs.kotlin.test.junit
+    testImplementation libs.androidx.ui.test.manifest
+    testImplementation libs.androidx.ui.test.junit4
+
+    // UI testing libraries
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.androidx.espresso.core
 
     // UI
-    implementation "androidx.core:core-splashscreen:1.0.1"
     implementation project(':core-ui')
-
-    // Modules
 }

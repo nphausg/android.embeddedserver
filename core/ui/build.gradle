@@ -9,6 +9,7 @@ android {
 
     defaultConfig {
         minSdk 21
+        targetSdk 34
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -35,22 +36,22 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.13.1'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.12.0'
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
 
     // Compose
-    def composeBom = platform('androidx.compose:compose-bom:2024.05.00')
-    api composeBom
-    androidTestImplementation composeBom
-    // Android Studio Preview support
-    api 'androidx.compose.ui:ui-tooling-preview'
-    debugApi 'androidx.compose.ui:ui-tooling'
+    implementation platform(libs.androidx.compose.bom)
+    api libs.androidx.material3
     // Optional - Integration with activities
-    api 'androidx.activity:activity-compose:1.9.0'
-    api 'androidx.compose.material3:material3'
-    api 'androidx.compose.foundation:foundation'
+    api libs.androidx.activity.compose
     // or only import the main APIs for the underlying toolkit systems,
     // such as input and measurement/layout
-    api 'androidx.compose.ui:ui'
+    api libs.androidx.ui
+    debugApi libs.androidx.ui.tooling
+    // Android Studio Preview support
+    api libs.androidx.ui.tooling.preview
+    api libs.androidx.ui.graphics
+    api libs.material3
+    api libs.androidx.foundation
+    api libs.navigation.compose
 }

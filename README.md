@@ -44,7 +44,7 @@ git checkout master
 
 Config | Demo |
 --- | --- |
-<img src="docs/static_config.png"> | <img src="docs/static_demo.png"> |
+<img src="docs/static_config.jpg"> | <img src="docs/static_demo.jpg"> |
 
 ```kotlin
     staticResources("/static", ""){
@@ -58,7 +58,7 @@ Config | Demo |
 
 Fruits | Detail |
 --- | --- |
-<img src="docs/fruits.png"> | <img src="docs/detail.png"> |
+<img src="docs/fruits.jpg"> | <img src="docs/detail.jpg"> |
 
 Device | Connect |
 --- | --- |

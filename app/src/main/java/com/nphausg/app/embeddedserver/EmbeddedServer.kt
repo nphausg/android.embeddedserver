@@ -15,6 +15,7 @@ import io.ktor.http.ContentDisposition
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.HttpStatusCode.Companion.PartialContent
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
@@ -41,6 +42,8 @@ object EmbeddedServer {
 
     private const val PORT = 6868
     private val ioScope = CoroutineScope(Dispatchers.IO)
+    private const val FILE_NAME = "file.jpg"
+    private const val MP3_FILE_NAME = "bye_bye_bye_nsync.mp3"
 
     private val server by lazy {
         embeddedServer(Netty, PORT) {
@@ -78,12 +81,12 @@ object EmbeddedServer {
                     }
                 }
                 get("/download") {
-                    val file = File("files/ktor_logo.png")
+                    val file = File("files/$FILE_NAME")
                     call.response.header(
                         HttpHeaders.ContentDisposition,
                         ContentDisposition.Attachment.withParameter(
-                            ContentDisposition.Parameters.FileName,
-                            "ktor_logo.png"
+                            key = ContentDisposition.Parameters.FileName,
+                            value = FILE_NAME
                         ).toString()
                     )
                     call.response.status(HttpStatusCode.OK)
@@ -114,7 +117,7 @@ object EmbeddedServer {
     val host: String
         get() = String.format("%s:%d", NetworkUtils.getLocalIpAddress(), PORT)
 
-    suspend fun okText(call: ApplicationCall, text: String) {
+    private suspend fun okText(call: ApplicationCall, text: String) {
         call.respondText(
             text = text,
             status = HttpStatusCode.OK,

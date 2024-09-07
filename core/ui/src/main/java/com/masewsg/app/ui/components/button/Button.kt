@@ -13,9 +13,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledIconToggleButton
@@ -32,9 +29,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.masewsg.app.ui.components.ComposeBackground
-import com.masewsg.app.ui.components.theme.ComposeTheme
 import com.masewsg.app.ui.components.ThemePreviews
 import com.masewsg.app.ui.components.icon.ComposeIcons
+import com.masewsg.app.ui.components.theme.ComposeTheme
 
 /**
  * Now in Android filled button with generic content slot. Wraps Material 3 [Button].
