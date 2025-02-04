@@ -6,10 +6,14 @@
 
 package com.nphausg.app.embeddedserver.activities
 
+import android.app.ActivityManager
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -19,6 +23,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,6 +37,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -52,6 +60,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -66,9 +75,12 @@ import com.masewsg.app.ui.components.icon.ComposeIcons
 import com.masewsg.app.ui.components.theme.ComposeTheme
 import com.nphausg.app.embeddedserver.EmbeddedServer
 import com.nphausg.app.embeddedserver.R
+import com.nphausg.app.embeddedserver.activities.ServiceUtils.isServiceRunning
+import com.nphausg.app.embeddedserver.service.EmbeddedServerService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
+
 
 private val getRunningServerInfo = { ticks: Int ->
     "The server is running on: ${Build.MODEL} at ${EmbeddedServer.host} -> (${ticks}s ....)"
@@ -82,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         // Keep the splash screen on-screen until the UI state is loaded. This condition is
         // evaluated each time the app needs to be redrawn so it should be fast to avoid blocking
         // the UI.
+
         splashScreen.setKeepOnScreenCondition {
             false
         }
@@ -100,11 +113,55 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         // EmbeddedServer.stop()
     }
 }
+
+@Composable
+fun ClickableRowWithDropdown() {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded }
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(imageVector = ComposeIcons.PlayArrow, contentDescription = null)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                color = Color.Black,
+                textAlign = TextAlign.Start,
+                text = String.format("POST: %s/send_sms", EmbeddedServer.host),
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+
+
+        AnimatedVisibility(visible = expanded) {
+            Text(
+                text = "{\n" +
+                        "    \"phoneNumber\": \"your phone number\",\n" +
+                        "    \"message\": \"your message \"\n" +
+                        "}",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .background(Color.LightGray, shape = RoundedCornerShape(8.dp))
+                    .padding(8.dp),
+                color = Color.Black,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+
 
 @Composable
 private fun Logo() {
@@ -177,6 +234,7 @@ private fun MainScreen(modifier: Modifier = Modifier) {
         }
     }
 
+
     var hasStarted by remember { mutableStateOf(false) }
 
     val value by rememberInfiniteTransition(label = "")
@@ -244,6 +302,17 @@ private fun MainScreen(modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.titleMedium,
                 )
             }
+//            Row {
+//                Icon(imageVector = ComposeIcons.PlayArrow, contentDescription = null)
+//                Text(
+//                    color = Color.Black,
+//                    textAlign = TextAlign.Start,
+//                    text = String.format("POST: %s/send_sms", EmbeddedServer.host),
+//                    style = MaterialTheme.typography.titleMedium,
+//                )
+//            }
+            ClickableRowWithDropdown()
+
 
             Row {
                 Icon(imageVector = ComposeIcons.PlayArrow, contentDescription = null)
@@ -255,6 +324,16 @@ private fun MainScreen(modifier: Modifier = Modifier) {
                 )
             }
 
+
+        }
+        val context = LocalContext.current
+//        val isRunning = isServiceRunning(
+//            context,
+//            EmbeddedServerService::class.java
+//        )
+        val isrunning = isServiceRunning(context,EmbeddedServerService::class.java)
+        if (isrunning) {
+            hasStarted = true
         }
 
         Row(
@@ -266,8 +345,20 @@ private fun MainScreen(modifier: Modifier = Modifier) {
                 enabled = !hasStarted,
                 modifier = reusedModifier,
                 onClick = {
+                    val serviceIntent = Intent(context, EmbeddedServerService::class.java)
+                    if(isrunning){
+
+                    EmbeddedServer.stop()
+                    context.stopService(serviceIntent);
+                    }
                     hasStarted = true
-                    EmbeddedServer.start()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.startForegroundService(serviceIntent)
+                    } else {
+                        context.startService(serviceIntent)
+                    }
+
+                   // EmbeddedServer.start()
                 },
                 text = { Text("Start") }
             )
@@ -278,7 +369,10 @@ private fun MainScreen(modifier: Modifier = Modifier) {
                 onClick = {
                     ticks = 0
                     hasStarted = false
-                    EmbeddedServer.stop()
+                    val serviceIntent = Intent(context, EmbeddedServerService::class.java)
+                    context.stopService(serviceIntent);
+                   // EmbeddedServer.stop()
+
                 },
                 text = { Text("Stop") }
             )
@@ -320,5 +414,19 @@ private fun MainScreenPreview() {
         ComposeApp {
             MainScreen()
         }
+    }
+}
+
+
+
+object ServiceUtils {
+    fun isServiceRunning(context: Context, serviceClass: Class<*>): Boolean {
+        val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
     }
 }
