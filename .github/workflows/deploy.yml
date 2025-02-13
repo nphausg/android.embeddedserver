@@ -1,0 +1,60 @@
+name: Deploy
+on:
+  push:
+    branches: [ master ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build & Deploy Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Set up environment variables
+        run: | 
+          echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > app/keystore.jks
+          echo "ANDROID_KEYSTORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "ANDROID_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }}" >> $GITHUB_ENV
+          echo "ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> $GITHUB_ENV
+      - name: Build AAB
+        run: |
+            ./gradlew :app:bundleRelease --no-daemon
+      - name: Build APK
+        run: |
+          ./gradlew :app:assembleRelease --no-daemon
+      - name: Move files
+        run: |
+          mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/app-release-unsigned.apk
+          mv app/build/outputs/bundle/release/app-release.aab app/build/app-release.aab
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: AABs
+          path: app/build/app-release.aab
+      - name: Sign APK
+        run: |
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+          -keystore app/keystore.jks \
+          -storepass ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \
+          -keypass ${{ secrets.ANDROID_KEY_PASSWORD }} \
+          app/build/app-release-unsigned.apk \
+          ${{ secrets.ANDROID_KEY_ALIAS }}
+      - name: Align APK
+        run: |
+          ${ANDROID_HOME}/build-tools/34.0.0/zipalign -v 4 \
+          app/build/app-release-unsigned.apk \
+          app/build/app-release.apk \
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: APKs
+          path: app/build/app-release.apk
+      
