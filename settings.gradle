@@ -8,5 +8,5 @@ dependencyResolutionManagement {
 rootProject.name = "android.embeddedserver"
 include ':app'
 // Modules
-include ':core-ui'
-project(':core-ui').projectDir = new File(rootDir, 'core/ui')
+include ':foundation-ui'
+project(':foundation-ui').projectDir = new File(rootDir, 'foundation/ui')

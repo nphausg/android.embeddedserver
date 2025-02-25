@@ -4,7 +4,7 @@
  * Last modified 11/19/22, 3:58 PM
  */
 
-package com.nphausg.app.embeddedserver.activities
+package com.nphausg.app.embeddedserver.ui
 
 import android.os.Build
 import android.os.Bundle
@@ -38,7 +38,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -90,78 +89,12 @@ class MainActivity : AppCompatActivity() {
         // This also sets up the initial system bar style based on the platform theme
         // enableEdgeToEdge()
         setContent {
-            CompositionLocalProvider() {
-                ComposeTheme {
-                    ComposeApp {
-                        MainScreen()
-                    }
+            ComposeTheme {
+                ComposeApp {
+                    MainScreen()
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // EmbeddedServer.stop()
-    }
-}
-
-@Composable
-private fun Logo() {
-
-    val coroutineScope = rememberCoroutineScope()
-    val offsetX = remember { Animatable(0f) }
-    val offsetY = remember { Animatable(0f) }
-
-    Card(
-        modifier = Modifier
-            .size(128.dp)
-            .offset {
-                IntOffset(
-                    offsetX.value.toInt(),
-                    offsetY.value.toInt()
-                )
-            }
-            .pointerInput(Unit) {
-                detectDragGestures(
-                    onDragEnd = {
-                        coroutineScope.launch {
-                            offsetY.animateTo(
-                                targetValue = 0f,
-                                animationSpec = tween(
-                                    durationMillis = 1000,
-                                    delayMillis = 0
-                                )
-                            )
-                        }
-                        coroutineScope.launch {
-                            offsetX.animateTo(
-                                targetValue = 0f,
-                                animationSpec = tween(
-                                    durationMillis = 1000,
-                                    delayMillis = 0
-                                )
-                            )
-                        }
-                    },
-                    onDrag = { change, dragAmount ->
-                        change.consume()
-                        coroutineScope.launch {
-                            offsetY.snapTo(offsetY.value + dragAmount.y)
-                        }
-                        coroutineScope.launch {
-                            offsetX.snapTo(offsetX.value + dragAmount.x)
-                        }
-                    }
-                )
-            },
-        shape = CircleShape
-    ) {
-        Image(
-            painterResource(R.drawable.logo),
-            contentDescription = "",
-            contentScale = ContentScale.Inside
-        )
     }
 }
 
@@ -208,7 +141,7 @@ private fun MainScreen(modifier: Modifier = Modifier) {
         val reusedModifier = Modifier.weight(1f)
 
         Spacer(modifier = reusedModifier)
-        Logo()
+        AnimatedLogo()
         Spacer(modifier = Modifier.weight(0.1f))
         Column(
             verticalArrangement = Arrangement.spacedBy(

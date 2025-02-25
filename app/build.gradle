@@ -85,5 +85,5 @@ dependencies {
     androidTestImplementation libs.androidx.espresso.core
 
     // UI
-    implementation project(':core-ui')
+    implementation project(':foundation-ui')
 }
