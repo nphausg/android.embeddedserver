@@ -45,7 +45,6 @@ data class BackgroundTheme(
  */
 val LocalBackgroundTheme = staticCompositionLocalOf { BackgroundTheme() }
 
-
 /**
  * The main background for the app.
  * Uses [LocalBackgroundTheme] to set the color and tonal elevation of a [Surface].
@@ -200,4 +199,3 @@ fun GradientBackgroundAndroid() {
         ComposeGradientBackground(Modifier.size(100.dp), content = {})
     }
 }
-

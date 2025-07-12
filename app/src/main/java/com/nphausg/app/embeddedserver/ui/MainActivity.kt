@@ -10,16 +10,13 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,12 +24,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -43,18 +36,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.masewsg.app.ui.ComposeApp
@@ -64,17 +52,14 @@ import com.masewsg.app.ui.components.button.ComposeOutlinedButton
 import com.masewsg.app.ui.components.icon.ComposeIcons
 import com.masewsg.app.ui.components.theme.ComposeTheme
 import com.nphausg.app.embeddedserver.EmbeddedServer
-import com.nphausg.app.embeddedserver.R
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.delay
 
 private val getRunningServerInfo = { ticks: Int ->
     "The server is running on: ${Build.MODEL} at ${EmbeddedServer.host} -> (${ticks}s ....)"
 }
 
 class MainActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -100,7 +85,6 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 private fun MainScreen(modifier: Modifier = Modifier) {
-
     var ticks by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
@@ -119,10 +103,11 @@ private fun MainScreen(modifier: Modifier = Modifier) {
             animationSpec = infiniteRepeatable(
                 animation = tween(
                     durationMillis = 1000,
-                    easing = LinearEasing
+                    easing = LinearEasing,
                 ),
-                repeatMode = RepeatMode.Reverse
-            ), label = ""
+                repeatMode = RepeatMode.Reverse,
+            ),
+            label = "",
         )
 
     Column(
@@ -134,10 +119,9 @@ private fun MainScreen(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(
             space = 20.dp,
-            alignment = Alignment.CenterVertically
-        )
+            alignment = Alignment.CenterVertically,
+        ),
     ) {
-
         val reusedModifier = Modifier.weight(1f)
 
         Spacer(modifier = reusedModifier)
@@ -146,8 +130,8 @@ private fun MainScreen(modifier: Modifier = Modifier) {
         Column(
             verticalArrangement = Arrangement.spacedBy(
                 space = 20.dp,
-                alignment = Alignment.CenterVertically
-            )
+                alignment = Alignment.CenterVertically,
+            ),
         ) {
             Row {
                 Icon(imageVector = ComposeIcons.PlayArrow, contentDescription = null)
@@ -187,13 +171,12 @@ private fun MainScreen(modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.titleMedium,
                 )
             }
-
         }
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Dp(36f))
+                .padding(Dp(36f)),
         ) {
             ComposeButton(
                 enabled = !hasStarted,
@@ -202,7 +185,7 @@ private fun MainScreen(modifier: Modifier = Modifier) {
                     hasStarted = true
                     EmbeddedServer.start()
                 },
-                text = { Text("Start") }
+                text = { Text("Start") },
             )
             Spacer(modifier = Modifier.weight(0.1f))
             ComposeOutlinedButton(
@@ -213,7 +196,7 @@ private fun MainScreen(modifier: Modifier = Modifier) {
                     hasStarted = false
                     EmbeddedServer.stop()
                 },
-                text = { Text("Stop") }
+                text = { Text("Stop") },
             )
         }
 

@@ -7,18 +7,19 @@
 package com.nphausg.app.embeddedserver.data.models
 
 import com.nphausg.app.embeddedserver.data.Database
-import kotlinx.serialization.Serializable
 import java.util.UUID
+import kotlinx.serialization.Serializable
 
 @Serializable
-data class Cart(val id: String, val items: List<Fruit>) {
-
+data class Cart(
+    val id: String,
+    val items: List<Fruit>,
+) {
     companion object {
-        fun sample(): Cart {
-            return Cart(
+        fun sample(): Cart =
+            Cart(
                 id = UUID.randomUUID().toString(),
-                items = Database.FRUITS
+                items = Database.FRUITS,
             )
-        }
     }
 }

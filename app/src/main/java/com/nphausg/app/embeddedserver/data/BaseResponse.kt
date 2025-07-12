@@ -9,4 +9,7 @@ package com.nphausg.app.embeddedserver.data
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BaseResponse<T>(val data: T? = null, val error: String? = null)
+data class BaseResponse<T>(
+    val data: T? = null,
+    val error: String? = null,
+)
