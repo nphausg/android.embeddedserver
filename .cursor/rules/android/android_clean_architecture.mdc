@@ -1,0 +1,13 @@
+---
+description: Enforce clean architecture principles in Android projects
+globs:
+  - "app/src/main/java/**"
+alwaysApply: true
+---
+- Follow domain/data/presentation separation: domain is business logic, data is data sources, presentation is UI.
+- Keep domain layer free of Android framework dependencies.
+- Use UseCases (Interactors) for business rules, triggered from ViewModels or Controllers.
+- Repositories should expose interfaces, not implementations.
+- Avoid directly accessing data sources in presentation layer.
+- Prefer dependency inversion: inject interfaces rather than concrete classes.
+- Maintain simple, testable domain models.

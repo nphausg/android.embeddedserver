@@ -1,0 +1,11 @@
+---
+description: Android UI testing best practices using Espresso and Compose Testing
+alwaysApply: false
+---
+- Use **Espresso** for testing classic Android Views; use **Compose Testing APIs** for Jetpack Compose UI.
+- Keep UI tests focused on user interactions and visible UI changes.
+- Avoid complex logic in UI tests; delegate business logic testing to unit tests.
+- Use **Idling Resources** or `composeTestRule.awaitIdle()` to synchronize asynchronous events.
+- Use clear, descriptive test names that reflect user behavior being tested.
+- Isolate UI tests from backend dependencies by using mock servers or test doubles.
+- Run UI tests on real or emulated devices to catch platform-specific issues.
