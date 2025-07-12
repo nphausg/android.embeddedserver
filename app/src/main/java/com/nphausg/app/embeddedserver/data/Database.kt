@@ -7,10 +7,7 @@
 package com.nphausg.app.embeddedserver.data
 
 import com.nphausg.app.embeddedserver.data.models.Fruit
-import java.util.UUID
 
 object Database {
-
     val FRUITS = mutableListOf<Fruit>()
-
 }

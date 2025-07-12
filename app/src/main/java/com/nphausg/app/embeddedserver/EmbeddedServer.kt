@@ -15,7 +15,6 @@ import io.ktor.http.ContentDisposition
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.HttpStatusCode.Companion.PartialContent
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
@@ -31,15 +30,14 @@ import io.ktor.server.response.respondFile
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
+import java.io.File
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.io.File
 
 object EmbeddedServer {
-
     private const val PORT = 6868
     private val ioScope = CoroutineScope(Dispatchers.IO)
     private const val FILE_NAME = "file.jpg"
@@ -53,10 +51,12 @@ object EmbeddedServer {
                 anyHost()
             }
             install(ContentNegotiation) {
-                json(Json {
-                    prettyPrint = true
-                    isLenient = true
-                })
+                json(
+                    Json {
+                        prettyPrint = true
+                        isLenient = true
+                    },
+                )
             }
             routing {
                 //  staticResources
@@ -67,9 +67,12 @@ object EmbeddedServer {
                     okText(call, "Hello!! You are here in ${Build.MODEL}")
                 }
                 get("/fruits") {
-                    okText(call, FileUtils.readText("data.json").also {
-                        Database.FRUITS.addAll(FileUtils.decode<Cart>(it).items)
-                    })
+                    okText(
+                        call,
+                        FileUtils.readText("data.json").also {
+                            Database.FRUITS.addAll(FileUtils.decode<Cart>(it).items)
+                        },
+                    )
                 }
                 get("/fruits/{id}") {
                     val id = call.parameters["id"]
@@ -84,10 +87,11 @@ object EmbeddedServer {
                     val file = File("files/$FILE_NAME")
                     call.response.header(
                         HttpHeaders.ContentDisposition,
-                        ContentDisposition.Attachment.withParameter(
-                            key = ContentDisposition.Parameters.FileName,
-                            value = FILE_NAME
-                        ).toString()
+                        ContentDisposition.Attachment
+                            .withParameter(
+                                key = ContentDisposition.Parameters.FileName,
+                                value = FILE_NAME,
+                            ).toString(),
                     )
                     call.response.status(HttpStatusCode.OK)
                     call.respondFile(file)
@@ -117,11 +121,14 @@ object EmbeddedServer {
     val host: String
         get() = String.format("%s:%d", NetworkUtils.getLocalIpAddress(), PORT)
 
-    private suspend fun okText(call: ApplicationCall, text: String) {
+    private suspend fun okText(
+        call: ApplicationCall,
+        text: String,
+    ) {
         call.respondText(
             text = text,
             status = HttpStatusCode.OK,
-            contentType = ContentType.Application.Json
+            contentType = ContentType.Application.Json,
         )
     }
 }

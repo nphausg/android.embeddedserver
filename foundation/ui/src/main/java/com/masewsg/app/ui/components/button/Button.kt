@@ -263,7 +263,10 @@ private fun ComposeButtonContent(
 }
 
 @Composable
-fun ComposeToggleButton(checked: @Composable () -> Unit, unchecked: @Composable () -> Unit) {
+fun ComposeToggleButton(
+    checked: @Composable () -> Unit,
+    unchecked: @Composable () -> Unit,
+) {
     var hasChecked by remember { mutableStateOf(false) }
     FilledIconToggleButton(checked = hasChecked, onCheckedChange = { hasChecked = it }) {
         if (hasChecked) {

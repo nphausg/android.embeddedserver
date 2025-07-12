@@ -10,13 +10,12 @@ import kotlinx.serialization.json.Json
 
 object FileUtils {
     fun readText(path: String): String =
-        this::class.java.classLoader?.getResource(path)?.readText().orEmpty()
+        this::class.java.classLoader
+            ?.getResource(path)
+            ?.readText()
+            .orEmpty()
 
-    inline fun <reified T> decode(json: String): T =
-        Json.decodeFromString<T>(json)
+    inline fun <reified T> decode(json: String): T = Json.decodeFromString<T>(json)
 
-    inline fun <reified T> readJson(path: String): T =
-        decode(readText(path))
+    inline fun <reified T> readJson(path: String): T = decode(readText(path))
 }
-
-

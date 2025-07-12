@@ -9,4 +9,7 @@ package com.nphausg.app.embeddedserver.data.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Fruit(val id: String = "", val name: String = "")
+data class Fruit(
+    val id: String = "",
+    val name: String = "",
+)
