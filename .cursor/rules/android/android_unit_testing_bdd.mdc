@@ -1,0 +1,24 @@
+---
+description: Unit testing best practices with BDD style
+alwaysApply: false
+---
+- Name test functions in BDD style: given_<condition>_when_<action>_then_<result>
+- Use GIVEN, WHEN, THEN comments in the test body for clarity.
+- Write one behavioral scenario per test.
+- Use mocks (MockK, Mockito) to isolate dependencies.
+- Prefer runTest or coroutine test rules for suspend functions.
+- Avoid fragile tests with real-time delays or random input.
+- Example:
+```kotlin
+@Test
+fun givenValidUser_whenFetchUser_thenReturnsUser() {
+    // GIVEN
+    val userId = 123
+    coEvery { userRepo.getUser(userId) } returns User(userId, "Alice")
+
+    // WHEN
+    val result = runBlocking { sut.fetchUser(userId) }
+
+    // THEN
+    assertEquals("Alice", result.name)
+}

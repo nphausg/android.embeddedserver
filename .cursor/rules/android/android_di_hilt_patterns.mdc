@@ -1,0 +1,13 @@
+---
+description: Dependency injection patterns with Hilt
+globs:
+  - "app/src/main/java/**"
+alwaysApply: true
+---
+- Annotate Application class with @HiltAndroidApp
+- Use @HiltViewModel for ViewModel injection
+- Provide dependencies in @Module with @InstallIn
+- Inject interfaces rather than concrete implementations
+- Use qualifiers when multiple implementations exist
+- Avoid static singletons outside of Hilt’s graph
+- Keep modules small and logically grouped

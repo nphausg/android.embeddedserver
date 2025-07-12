@@ -1,0 +1,11 @@
+---
+description: Android Integration Testing best practices for multi-layer testing
+alwaysApply: false
+---
+- Integration tests should verify interactions between multiple layers (e.g., ViewModel + Repository + Data Source).
+- Use **Hilt Test Components** or DI overrides to inject fake or in-memory dependencies.
+- Avoid hitting real external services; use mocked network responses or test databases.
+- Write integration tests to cover critical user flows end-to-end.
+- Keep tests stable and repeatable; clean up any test data after execution.
+- Use **JUnit Rules** or **TestContainers** where applicable for environment setup/teardown.
+- Separate integration tests from unit tests and run them less frequently (e.g., nightly builds).

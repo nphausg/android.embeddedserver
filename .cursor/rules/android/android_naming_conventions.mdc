@@ -1,0 +1,13 @@
+---
+description: Naming conventions for consistency
+globs:
+  - "**/*.kt"
+alwaysApply: true
+---
+- Classes: PascalCase
+- Functions: camelCase
+- Constants: UPPER_SNAKE_CASE
+- Variables: camelCase
+- Test functions: GIVEN_<condition> WHEN <action> THEN <result>
+- Avoid abbreviations and cryptic names
+- Name should communicate clear intent

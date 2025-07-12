@@ -1,0 +1,12 @@
+---
+description: Clean code principles for better readability
+alwaysApply: false
+---
+- Keep functions small and focused
+- One class per file
+- Limit function size to 20 lines if possible
+- Avoid long parameter lists (max 3–4 parameters)
+- Minimize nested control structures
+- Remove commented-out code before committing
+- Prefer meaningful names over comments
+- DRY (Don’t Repeat Yourself): extract duplication

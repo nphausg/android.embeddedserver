@@ -1,0 +1,11 @@
+---
+description: Performance best practices for Android
+alwaysApply: false
+---
+- Avoid allocating objects in tight loops
+- Use lazy initialization where appropriate
+- Reuse existing objects instead of recreating
+- Prefer immutable data structures for concurrency
+- Minimize reflection usage
+- Avoid excessive recomposition in Compose by using keys and remember
+- Profile and measure before optimizing prematurely
